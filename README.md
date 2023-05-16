@@ -87,13 +87,12 @@ To achieve this goal, we used the Grid Search, obtaining a MAE of 1073 and an R-
 The last specific requirement we were asked for our task was the interpretation of the results and to provide insights and recommendations based on our findings. To interpret the results, we used the feature importance of our best performing model, which has an R-squared of nearly 0.99, as previously shown. We decided to give an interpretation based on our understanding of the task following the book’s procedure rather than using specific packages as SHAP library. The higher the feature importance, the more important the feature is for our model. The importance of a feature is computed as the normalised total reduction of the criterion brought by that feature. Therefore, this should be a message of connection with the variable we are trying to predict. To be sure of what obtained, we will compare our results with our intuition and our preliminary analysis that can be found in section c.
 This placeholder table sums up the four attributes with highest feature importance. Their feature importance contains nearly the 95% of the total sum of all the feature importance.
 
-Feature=Economy Importance=49%
+Attribute	  Feature Importance
+Economy	    49%
+Business	  39%
+duration	  6%
+days left	  2%
 
-Feature=Business Importance=39%
-
-Feature=duration Importance=6%
-
-Feature=days left Importance=2%
 
 
 This is coherent with what achieved in the preliminary analysis: the class is the only categorical variable which seem to have an impact on the price. In particular, Economy class has 10%  more impact than the Business class. The pairplot used in the preliminary analysis showed that Business class was associated with a higher price with respect to the Economy. Also the numerical variable duration and days left seem to have a little impact on our model. The correlation matrix showed that duration was the variable most correlated to price. Other variables seem not to have a significant impact on the price of flights among Indian cities, therefore price seem not to be particularly influenced by source and destination cities, the airline or departure and arrival time.
