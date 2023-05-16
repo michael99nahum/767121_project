@@ -87,11 +87,16 @@ To achieve this goal, we used the Grid Search, obtaining a MAE of 1073 and an R-
 The last specific requirement we were asked for our task was the interpretation of the results and to provide insights and recommendations based on our findings. To interpret the results, we used the feature importance of our best performing model, which has an R-squared of nearly 0.99, as previously shown. We decided to give an interpretation based on our understanding of the task following the book’s procedure rather than using specific packages as SHAP library. The higher the feature importance, the more important the feature is for our model. The importance of a feature is computed as the normalised total reduction of the criterion brought by that feature. Therefore, this should be a message of connection with the variable we are trying to predict. To be sure of what obtained, we will compare our results with our intuition and our preliminary analysis that can be found in section c.
 This placeholder table sums up the four attributes with highest feature importance. Their feature importance contains nearly the 95% of the total sum of all the feature importance.
 
-Attribute	  Feature Importance
-Economy	    49%
-Business	  39%
-duration	  6%
-days left	  2%
+                   
+Attribute             Feature Importance
+
+Economy	             49%
+
+Business	           39%
+
+duration	           6%
+
+days left	           2%
 
 
 
