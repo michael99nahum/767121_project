@@ -36,6 +36,7 @@ The histogram shows that the number of stops is rarely equal to the category "tw
 From the correlation matrix, we can notice that:
 
 •	The correlation coefficient of 0.2 indicates a positive but moderate correlation between "duration" and "price". This suggests that flights with longer durations tend to have slightly higher prices than those with shorter durations. This could be due to the higher costs associated with longer flights.
+
 •	Similar considerations can be done for the correlation between “stops” and “price” (which have a correlation of 0.12). This is due to the fact that “stops” and “duration” are highly correlated (coefficient of 0.47), suggesting that flights with longer durations tend to have higher number of stops (which, again, makes sense).
 All the other variables have small correlation coefficients, so we cannot conclude much from them.
 The last thing we did in our preliminary analysis is to evaluate the class category, through a pairplot. The pairplot, as could be imagined, shows that the Business class is associated with higher prices with respect to the Economy class.
