@@ -3,7 +3,7 @@ Air transportation fare prediction Michael Nahum, Arianna Caiffa, Angel Marfiuc
 
 ## INTRODUCTION:
 
-The purpose of the project is to use given information to predict flight costs, which can assist both customers and airlines in making informed decisions about booking flights and understanding the factors that affect flight prices.
+The purpose of the project is to use the information provided in the dataset to predict flights' costs, which can assist both customers and airlines in making informed decisions about booking flights and understanding the factors that affect flight prices.
 
 The dataset includes information such as the airline's name, flight number, source and destination cities, departure and arrival times, number of stops, ticket class, flight duration, days left until departure, and ticket price in local currency.
 
