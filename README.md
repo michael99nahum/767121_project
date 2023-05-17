@@ -5,7 +5,7 @@ Air transportation fare prediction: Michael Nahum, Arianna Caiffa, Angel Marfiuc
 
 The purpose of the project is to use the dataset provided to predict flight prices for different airlines and routes in India, which can assist both customers and airlines in making informed decisions about booking flights and understanding the factors that affect flight prices.
 
-The dataset includes information such as the airline's name, the flight number, source and destination cities, departure and arrival times, the number of stops, the class of the ticket, the flight duration, The number of days between the date of data collection and the date of departure, and ticket price in local currency.
+The dataset includes information such as the airline's name, the flight number, source and destination cities, departure and arrival times, the number of stops, the class of the ticket, the flight duration, the number of days between the date of data collection and the date of departure, and ticket price in local currency.
 
 To begin, we first cleaned the data, handling missing values and outliers. After cleaning the data, we performed exploratory data analysis (EDA) using visualization to evaluate the entire dataset. Then we examined correlations and data distribution, and we determined the metric that is most correlated with price.
 
