@@ -1,17 +1,18 @@
 # 767121
-Air transportation fare prediction Michael Nahum, Arianna Caiffa, Angel Marfiuc
+Air transportation fare prediction: Michael Nahum, Arianna Caiffa, Angel Marfiuc
 
 ## INTRODUCTION:
 
-The purpose of the project is to use the information provided in the dataset to predict flights' costs, which can assist both customers and airlines in making informed decisions about booking flights and understanding the factors that affect flight prices.
+The purpose of the project is to use the dataset provided to predict flight prices for different airlines and routes in India, which can assist both customers and airlines in making informed decisions about booking flights and understanding the factors that affect flight prices.
 
-The dataset includes information such as the airline's name, flight number, source and destination cities, departure and arrival times, number of stops, ticket class, flight duration, days left until departure, and ticket price in local currency.
+The dataset includes information such as the airline's name, the flight number, source and destination cities, departure and arrival times, the number of stops, the class of the ticket, the flight duration, The number of days between the date of data collection and the date of departure, and ticket price in local currency.
 
-To begin, we first cleaned the data, handling missing values and outliers. After cleaning the data, we performed exploratory data analysis (EDA) using visualization to evaluate the entire dataset. Then we examined correlations and data distribution, in order to achieve the goal, that is to determine the metric that correlates the most with price.
+To begin, we first cleaned the data, handling missing values and outliers. After cleaning the data, we performed exploratory data analysis (EDA) using visualization to evaluate the entire dataset. Then we examined correlations and data distribution, and we determined the metric that is most correlated with price.
 
-Next, we selected suitable features and transformed the data as necessary to prepare it for modeling. 
-Following that, we divided the data into training and testing sets in order to evaluate at three regression models using appropriate metrics to assess their performance. 
-After that, we tuned the hyperparameters of our best-performing model, Ensamble Model, to achieve the best possible performance. 
+Next, in the process of feature engineering we selected suitable features and transformed the data as necessary to prepare it for modeling. 
+Following that, we divided the data into training and testing sets in order to evaluate three regression models using appropriate metrics to assess their performance. 
+After that, we tuned the hyperparameters of our best-performing model, which is the Random Forest Regressor, to achieve the best possible performances.
+We concluded our work with an interpretation of the results and by providing inisights based on our findings.
 
 
 ## METHODS:
@@ -24,30 +25,29 @@ The environment that we have used for our project is python.exe in anaconda3. Yo
 
 With a first overview of our dataset, we can see that we have three numerical variables (duration, days_left, price), eight categorical variables (airline, flight, source_city, destination_city, stops, arrival_time, class) and one useless column (Unnamed: 0), which we have dropped. Moreover, the dataset does not contain neither missing nor duplicated values.
 
-We can notice that the categorical variable stops, which represents the number of stops, has 3 possible values: “zero”, “one”, “two or more”. We can replace those value with their numerical value treating this category as a numerical variable. Encoding “two and more” as 2 shouldn’t be a problem if having more than two stops is rare. Otherwise, there is the risk to limit the capability of our model to predict correctly by introducing a cap for this variable. We transformed the stops variable using the pandas replace function. 
-
-The same thing could have been obtained using the Ordinal Encoder, however we decided to use that function since we are not introducing a hierarchy, but we are simply replacing a string with its integer value.
+We can notice that the categorical variable stops, which represents the number of stops, has 3 possible values: “zero”, “one”, “two or more”. We can replace those value with their numerical value treating this category as a numerical variable. Encoding “two and more” as 2 shouldn’t be a problem if having more than two stops is rare. Otherwise, there is the risk to limit the capability of our model to predict correctly by introducing a cap for this variable. We transformed the stops variable using the pandas replace function. The same thing could have been obtained using the Ordinal Encoder, however we decided to use that function since we are not introducing a hierarchy, but we are simply replacing a string with its integer value.
 
 Since for the project it is asked to interpret the results of the analysis and provide insights and recommendations based on the findings, it is useful to make a preliminary analysis to understand more about our dataset. We will do this by studying the dataset description, the histograms, and the correlation matrix for our numerical variables, and with a pair plot for understanding more about the class category, which intuitively seems to be a categorical variable which can influence the price of a flight.
-The dataset description shows that our numerical ranges are very different: probably it will be necessary to scale the variables, for example using the Standard Scaler. Moreover, the max value of price and duration are much higher than the 75% percentile. This means that we will have some outliers in our dataset we should take care of. We considered removing outliers from the dataset a bias, therefore we decided to take care of the by using the Mean Absolute Error (MAE) as the index to evaluate the model’s performances: MAE is more robust to outliers since MSE and RMSE square the distances, therefore higher distances have more weight.
+The dataset description shows that our numerical ranges are very different: probably it will be necessary to scale the variables, for example using the Standard Scaler. Moreover, the max value of price and duration are much higher than the 75% percentile. This means that we will have some outliers in our dataset we should take care of. We considered removing outliers from the dataset a bias, therefore we decided to take care of them by using the Mean Absolute Error (MAE) as the index to evaluate the model’s performances: MAE is more robust to outliers since MSE and RMSE square the distances, therefore higher distances have more weight.
 
 
 The histogram shows that the number of stops is rarely equal to the category "two or more". For this reason, we can assume that introducing a cap for our new numerical variable will not introduce a significant bias to our dataset, since it is very rare that a flight will have more than two stops. Besides, from the histogram we can confirm our intuitions regarding duration and price columns, which are skewed.
 From the correlation matrix, we can notice that:
 
-•	The correlation coefficient of 0.2 indicates a positive but moderate correlation between "duration" and "price". This suggests that flights with longer durations tend to have slightly higher prices than those with shorter durations. This could be due to the higher costs associated with longer flights.
+•	The correlation coefficient of 0.2 indicates a positive but moderate correlation between "duration" and "price". This suggests that flights with longer durations tend to have slightly higher prices than those with shorter durations. This could be due to the higher costs associated with longer flights. Duration is the variable with highest correlation with price.
 
 •	Similar considerations can be done for the correlation between “stops” and “price” (which have a correlation of 0.12). This is due to the fact that “stops” and “duration” are highly correlated (coefficient of 0.47), suggesting that flights with longer durations tend to have higher number of stops (which, again, makes sense).
 All the other variables have small correlation coefficients, so we cannot conclude much from them.
+
 The last thing we did in our preliminary analysis is to evaluate the class category, through a pairplot. The pairplot, as could be imagined, shows that the Business class is associated with higher prices with respect to the Economy class.
 
 ### Train and Test split:
 
-In order not to introduce a significant sampling bias, we have done stratified sampling to ensure that our test set will be representative of the whole dataset, with respect to the duration variable, which is the one most correlated to our target variable, the price. It is important to have a sufficient number of instances for each stratum, therefore we have used pd.cut() to create a duration variable with 5 categories. Our code shows that we achieved our purpose of having similar proportions for the whole dataset and the test set.
+In order not to introduce a significant sampling bias, we have done stratified sampling to ensure that our test set will be representative of the whole dataset, with respect to the duration variable, which is the one most correlated with our target variable, the price. It is important to have a sufficient number of instances for each stratum, therefore we have used pd.cut() to create a duration variable with 5 categories. Our code shows that we achieved our purpose of having similar proportions for the whole dataset and the test set.
 
 ### Feature Engineering:
 
-Since the flight columns is not useful for our prediction, we decided to drop it. As previously mentioned, since we have very different ranges for our numerical variables, it is necessary to scale them. This has been done using the Standard Scaler. The categorical variables, instead, have been encoded using the One Hot Encoder. Since we have just two categories for the class variable, we could have used just one binary variable by dropping the first category. However, we decided not to drop in order for our model to work correctly also if another class (for example, first class) would be added in Indian flights. To avoid data leakage, the feature engineering transformations have been done only in the training set.
+Since the flight columns is not useful for our prediction, we decided to drop it. As previously mentioned, since we have very different ranges for our numerical variables, it is necessary to scale them. This has been done using the Standard Scaler. The categorical variables, instead, have been encoded using the One Hot Encoder. Since we have just two categories for the class variable, we could have used just one binary variable by dropping the first category. However, we decided not to drop it in order for our model to work correctly also if another class (for example, first class) would be added in the future in Indian flights. To avoid data leakage, the feature engineering transformations have been fit only with the training set.
 
 ### Algorithms:
 
@@ -69,7 +69,7 @@ The first model implemented is a Decision Tree Regressor, which is a very simple
 
 ### Random Forest Regressor:
 
-The next step we did to improve the performances of our model is to use an Ensemble method, a Random Forest Regressor. This ensemble method based on bootstrap aggregation usually improves the performances by decreasing the degree of overfitting. Since we managed to obtain good results with a single Decision Tree Regressor, we thought that using a Random Forest would be the best method to improve our performances. This method has a MAE of 1075 and an R-squared higher than 98%.
+The next step we did to improve the performances of our model is to use an Ensemble method, a Random Forest Regressor. This ensemble method, based on bootstrap aggregation, usually improves the performances by decreasing the degree of overfitting. Since we managed to obtain good results with a single Decision Tree Regressor, we thought that using a Random Forest would be the best method to improve our performances. This method has a MAE of 1075 and an R-squared higher than 98%.
 
 ### Artificial neural network:
 
@@ -100,12 +100,12 @@ days left	           2%
 
 
 
-This is coherent with what achieved in the preliminary analysis: the class is the only categorical variable which seem to have an impact on the price. In particular, Economy class has 10%  more impact than the Business class. The pairplot used in the preliminary analysis showed that Business class was associated with a higher price with respect to the Economy. Also the numerical variable duration and days left seem to have a little impact on our model. The correlation matrix showed that duration was the variable most correlated to price. Other variables seem not to have a significant impact on the price of flights among Indian cities, therefore price seem not to be particularly influenced by source and destination cities, the airline or departure and arrival time.
-If we trust the order of the feature importance for all the attributes, we can conclude that Air_India is the airline with the highest impact on the price, and Delhi and Mumbai are the cities with highest impact on the price. The reason might be because those cities are the most important in India, but we do not have enough elements for being certain about that, and further analysis should be required.
+This is coherent with what achieved in the preliminary analysis: the class is the only categorical variable which seem to have an impact on the price. In particular, Economy class has 10%  more impact in the price than the Business class. The pairplot used in the preliminary analysis showed that Business class was associated with a higher price with respect to the Economy. Also the numerical variable duration and days left seem to have a little impact on our model. The correlation matrix showed that duration was the variable most correlated to price. Other variables seem not to have a significant impact on the price of flights among Indian cities, therefore price seem not to be particularly influenced by source and destination cities, the airline or departure and arrival time.
+If we trust the order of the feature importance for all the attributes, we can conclude that Air_India is the airline with the highest impact on the price, and Delhi and Mumbai are the cities with highest impact on the price. The reason might be because those cities are two of the most important in India, but we do not have enough elements for being certain about that, and further analysis should be required.
 
-## CONCLUSION:
+## CONCLUSIONS:
 
-Our code trains and evaluates three different machine learning models for predicting the price of a flight. The models are Decision Tree Regressor, a Random Forest Regressor, and Artificial Neural Network. The performance index chosen is the MAE, but we will also show the R-squared value, which does not depend on the output variable. The results of our model will be compared with one of the easiest regression models, the Linear Regression and can be shown in the table below.
+Our code trains and evaluates three different machine learning models for predicting the price of a flight. The models are Decision Tree Regressor, a Random Forest Regressor, and Artificial Neural Network. The performance index chosen is the MAE, but we will also show the R-squared value, which does not depend on the output variable. The results of our model will be compared with one of the easiest regression models, the Linear Regression, which we chose as our baseline model and are shown in the table below.
 
 Method	                     MAE             R-squared
 
@@ -117,15 +117,15 @@ Neural Network	             2380	               0.96
 
 Random Forest Regres.	       1075	               0.98
 
-All the machine learning models improve the baseline performances. As we can see, the Random Forest Regressor model has the lowest mean absolute error and the highest R-squared value, which indicates that it is the best performing model. 
+All the machine learning models improve the baseline performances. As we can see, the Random Forest Regressor model has the lowest mean absolute error and the highest R-squared value, which indicates that it is the best performing model among the three chosen. 
 
 It is important to highlight that the performance of the Neural Network depend on the architecture chosen, so its performances could have been improved by finding the optimal architecture (using for example auto-sklearn package, which finds the optimal regression model). 
 
 Moreover, the Decision Tree Regressor obtains good performances, and it is quite fast with respect to the ensemble method, which is the one with the highest performances. However, we are interested in finding an accurate method and therefore training speed is not the most important property of our algorithm.
 By analysing histograms, correlation matrix, pairplot and feature importance we can conclude that class and duration are the variables which have the highest impact on the price. In particular, flights with longer durations seem to be associated with higher prices and the Business class seem to be associated with higher price with respect to the Economy class. Besides, the number of stops is positively correlated with the duration of the flights, which makes sense: longer flights tend to have more stops than short flights. 
-This is probably the reason why also stops has a positive correlation with price. The fourth variable which impacts the most our model is the days left variable: this might be because the price changes depending on whenthe flight is booked, which again makes sense.
+This is probably the reason why also stops has a positive correlation with price. The fourth variable which impacts the most our model is the days left variable: this might be because the price changes depending on when the flight is booked, which again makes sense.
 
-Other variables do not have a significant impact on our best performing model, but we can notice that the most important cities (as Mumbai and Delhi) have a greater impact on the model than other cities.
+Other variables do not have a significant impact on our best performing model, but we can notice that two of the most important Indian cities (as Mumbai and Delhi) have a greater impact on the model than other cities.
 
 The main takeaway point from this code is that machine learning models can be used to predict the price of flights among Indian cities with a reasonable degree of accuracy: by tuning the hyperparameters we obtained a R-squared value of nearly 99%. 
 
@@ -134,11 +134,11 @@ The main takeaway point from this code is that machine learning models can be us
 ### Questions not fully answered:
 
 Our model achieves the best performances with a Random Forest Regressor, with a 99% R-squared value and a MAE of 1073, which seems to be a good result. However, we could have tried other Ensemble methods or different Neural Network architectures that could be more suitable for this specific task to improve our performances.
-Moreover, the results provided are based on the comparison of what obtained and what analysed in the preliminary analysis through histograms, pairplot and correlation matrix. A good way of moving forward would be to search for the flights’ prices, to understand how the changing of a variable would impact the price.
+Moreover, the results provided are based on the comparison of what obtained and what analysed in the preliminary analysis through histograms, pairplot and correlation matrix. A good way of moving forward would be to search for the flights’ prices, to understand how the changing of a variable would impact the price, with an empiric confirmation of what imagined.
 
 ### Next steps for this direction of future work
 
-•	search for the flights’ prices to have an empiric confirmation of the impact of a variable in our model.
+•	search for the flights’ prices to have an empiric confirmation of the impact of a variable in our model (in particular, the variables that have a higher feature importance).
 
 •	Collect more data to train the models.
 
